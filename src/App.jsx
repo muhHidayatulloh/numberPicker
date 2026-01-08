@@ -30,6 +30,17 @@ const App = () => {
   useEffect(() => {
     generateNumbers();
     getHistory();
+
+    const onStorage = () => {
+      setNamaHadiah(localStorage.getItem("currentHadiah"));
+      getHistory();
+    };
+
+    window.addEventListener("storage", onStorage);
+
+    return () => {
+      window.removeEventListener("storage", onStorage);
+    };
   }, [totalNumbers]);
 
   // Reset semua
@@ -237,7 +248,10 @@ const App = () => {
                 <input
                   type="text"
                   value={namaHadiah}
-                  onChange={(e) => setNamaHadiah(e.target.value)}
+                  onChange={(e) => {
+                    setNamaHadiah(e.target.value);
+                    localStorage.setItem("currentHadiah", e.target.value);
+                  }}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 />
               </div>
